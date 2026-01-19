@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class UserDAO {
@@ -70,5 +72,25 @@ public class UserDAO {
             }
             return Optional.empty();
         }
+    }
+
+    public List<User> findAll() throws SQLException {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users";
+
+        try (PreparedStatement stmt = this.connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                String username = rs.getString("username");
+                String phone = rs.getString("phone");
+                User user = new User(username, phone);
+                user.setId(id);
+                users.add(user);
+            }
+        }
+
+        return users;
     }
 }

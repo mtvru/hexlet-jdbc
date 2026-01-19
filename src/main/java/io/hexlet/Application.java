@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.Optional;
 
 public class Application {
@@ -34,6 +35,12 @@ public class Application {
             user33
                 .map(u -> u.getName() + " " + u.getPhone())
                 .ifPresent(System.out::println);
+            System.out.println(System.lineSeparator() + "FIND ALL USERS" + System.lineSeparator());
+            List<User> users = dao.findAll();
+            users
+                .stream()
+                .map(u -> u.getName() + " " + u.getPhone())
+                .forEach(System.out::println);
         }
     }
 }
